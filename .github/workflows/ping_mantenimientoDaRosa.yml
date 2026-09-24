@@ -1,0 +1,16 @@
+name: Supabase Keep Alive Mant Da Rosa
+
+on:
+  schedule:
+    - cron: '0 12 * * 2,5'
+  workflow_dispatch:
+
+jobs:
+  ping_supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hacer consulta de actividad a la API
+        run: |
+          curl -s "${{ secrets.SUPABASE_URL_DAROSA }}/rest/v1/" \
+          -H "apikey: ${{ secrets.SUPABASE_KEY_DAROSA }}" \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_KEY }}"
