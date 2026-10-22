@@ -2,15 +2,16 @@ name: Supabase Keep Alive Mant Da Rosa
 
 on:
   schedule:
-    - cron: '0 12 * * 2,5'
+    - cron: '0 12 * * 1,3,5'   # lunes, miércoles y viernes 09:00 hora Argentina
   workflow_dispatch:
 
 jobs:
   ping_supabase:
     runs-on: ubuntu-latest
     steps:
-      - name: Hacer consulta de actividad a la API
+      - name: Consulta real a la base
         run: |
-          curl -s "${{ secrets.SUPABASE_URL_DAROSA }}/rest/v1/" \
-          -H "apikey: ${{ secrets.SUPABASE_KEY_DAROSA }}" \
-          -H "Authorization: Bearer ${{ secrets.SUPABASE_KEY }}"
+          curl --fail-with-body -sS -X POST "${{ secrets.SUPABASE_URL_DAROSA }}/rest/v1/rpc/get_state" \
+            -H "apikey: ${{ secrets.SUPABASE_KEY_DAROSA }}" \
+            -H "Content-Type: application/json" \
+            -d '{"p_code":"PING"}'
